@@ -1,0 +1,79 @@
+#!/usr/bin/env node
+const { resolve } = require('path')
+const program = require('commander')
+const commands = require(resolve(__dirname, '../dist/index.js'))
+const { version } = require(resolve(__dirname, '../package.json'))
+
+process.env.NODE_PATH = resolve(__dirname, '../node_modules/')
+
+// 定义当前版本
+program
+  .version(version)
+
+// 1. js
+program
+  .command('add')
+  .description('Add a new template')
+  .alias('a')
+  .action(() => {
+    require('../src/command/add')()
+  })
+
+program
+    .command('list')
+    .description('List all the templates')
+    .alias('l')
+    .action(() => {
+        require('../src/command/list')()
+    })
+
+program
+    .command('init')
+    .description('Generate a new project')
+  .alias('i')
+  .action(() => {
+    require('../src/command/init')()
+  })
+
+program
+    .command('delete')
+    .description('Delete a template')
+    .alias('d')
+    .action(() => {
+        require('../src/command/delete')()
+    })
+
+// 2. ts
+// program
+//   .command('add')
+//   .description('Add a new template')
+//   .alias('a')
+//   .action(commands.add)
+
+// program
+//   .command('list')
+//   .description('List all templates')
+//   .alias('l')
+//   .action(commands.list)
+
+// program
+//   .command('delete')
+//   .description('Delete a template')
+//   .alias('d')
+//   .action(commands.del)
+
+// program
+//   .command('init')
+//   .description('Generate a new project')
+//   .alias('i')
+//   .action(commands.init)
+
+// 定义使用方法
+program
+  .usage('<command>')
+
+program.parse(process.argv)
+
+if(!program.args.length){
+  program.help()
+}
